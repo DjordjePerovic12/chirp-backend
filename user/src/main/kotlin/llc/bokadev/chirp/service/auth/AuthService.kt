@@ -1,6 +1,7 @@
 package llc.bokadev.chirp.service.auth
 
 import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
+import llc.bokadev.chirp.domain.exception.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.UserAlreadyExistsException
 import llc.bokadev.chirp.domain.exception.UserNotFoundException
 import llc.bokadev.chirp.domain.model.AuthenticatedUser
@@ -12,10 +13,12 @@ import llc.bokadev.chirp.infra.database.mappers.toUser
 import llc.bokadev.chirp.infra.database.repositories.RefreshTokenRepository
 import llc.bokadev.chirp.infra.database.repositories.UserRepository
 import llc.bokadev.chirp.infra.security.PasswordEncoder
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.security.MessageDigest
 import java.time.Instant
-import java.util.Base64
+import java.util.*
 
 @Service
 class AuthService(
@@ -64,6 +67,42 @@ class AuthService(
                 refreshToken = refreshToken,
             )
         } ?: throw UserNotFoundException()
+    }
+
+    @Transactional
+    fun refresh(refreshToken: String): AuthenticatedUser {
+        if (!jwtService.validateRefreshToken(refreshToken)) {
+            throw InvalidTokenException(
+                message = "Invalid refresh token"
+            )
+        }
+
+        val userId = jwtService.getUserIdFromToken(refreshToken)
+        val user = userRepository.findByIdOrNull(userId) ?: throw UserNotFoundException()
+
+        val hashed = hashToken(refreshToken)
+
+        return user.id.let { userId ->
+            refreshTokenRepository.findByUserIdAndHashedToken(
+                userId!!, hashed
+            ) ?: throw InvalidTokenException("Invalid token")
+
+            refreshTokenRepository.deleteByUserIdAndHashedToken(
+                userId = userId,
+                hashedToken = hashed
+            )
+            val newAccessToken = jwtService.generateRefreshToken(userId)
+            val newRefreshToken = jwtService.generateRefreshToken(userId)
+
+            storeRefreshToken(userId, newRefreshToken)
+
+            AuthenticatedUser(
+                user = user.toUser(),
+                accessToken = newAccessToken,
+                refreshToken = newRefreshToken
+            )
+        }
+
     }
 
     private fun storeRefreshToken(userId: UserId, token: String) {

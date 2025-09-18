@@ -3,6 +3,7 @@ package llc.bokadev.chirp.api.controllers
 import jakarta.validation.Valid
 import llc.bokadev.chirp.api.dto.AuthenticatedUserDto
 import llc.bokadev.chirp.api.dto.LoginRequest
+import llc.bokadev.chirp.api.dto.RefreshRequest
 import llc.bokadev.chirp.api.dto.RegisterRequest
 import llc.bokadev.chirp.api.dto.UserDto
 import llc.bokadev.chirp.api.mappers.toAuthenticatedUserDto
@@ -36,5 +37,12 @@ class AuthController(private val authService: AuthService) {
             email = loginRequest.email,
             password = loginRequest.password
         ).toAuthenticatedUserDto()
+    }
+
+    @PostMapping("/refresh")
+    fun refresh(
+        @RequestBody refreshRequest: RefreshRequest
+    ) : AuthenticatedUserDto {
+        return authService.refresh(refreshRequest.refreshToken).toAuthenticatedUserDto()
     }
 }
