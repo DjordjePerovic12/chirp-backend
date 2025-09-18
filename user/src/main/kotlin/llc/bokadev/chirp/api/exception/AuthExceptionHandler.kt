@@ -1,5 +1,6 @@
 package llc.bokadev.chirp.api.exception
 
+import llc.bokadev.chirp.domain.exception.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.UserAlreadyExistsException
 import org.apache.coyote.Response
 import org.springframework.http.HttpStatus
@@ -18,6 +19,13 @@ class AuthExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     fun onUserAlreadyExists(e: UserAlreadyExistsException) = mapOf(
         "code" to "USER_EXISTS",
+        "message" to e.message,
+    )
+
+    @ExceptionHandler(InvalidTokenException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onInvalidToken(e: UserAlreadyExistsException) = mapOf(
+        "code" to "INVALID_TOKEN",
         "message" to e.message,
     )
 
