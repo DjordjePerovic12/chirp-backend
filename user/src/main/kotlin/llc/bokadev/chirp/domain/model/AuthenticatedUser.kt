@@ -1,4 +1,4 @@
-package llc.bokadev.user.domain.model
+package llc.bokadev.chirp.domain.model
 
 data class AuthenticatedUser(
     val user: User,
