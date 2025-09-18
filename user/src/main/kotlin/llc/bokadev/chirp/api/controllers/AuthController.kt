@@ -9,14 +9,19 @@ import llc.bokadev.chirp.api.dto.UserDto
 import llc.bokadev.chirp.api.mappers.toAuthenticatedUserDto
 import llc.bokadev.chirp.api.mappers.toUserDto
 import llc.bokadev.chirp.service.auth.AuthService
+import llc.bokadev.chirp.service.auth.EmailVerificationService
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/auth")
-class AuthController(private val authService: AuthService) {
+class AuthController(private val authService: AuthService,
+                     private val emailVerificationService: EmailVerificationService
+) {
 
     @PostMapping("/register")
     fun register(
@@ -44,5 +49,12 @@ class AuthController(private val authService: AuthService) {
         @RequestBody refreshRequest: RefreshRequest
     ) : AuthenticatedUserDto {
         return authService.refresh(refreshRequest.refreshToken).toAuthenticatedUserDto()
+    }
+
+    @GetMapping("/verify")
+    fun verifyEmail(
+        @RequestParam token: String
+    ) {
+        emailVerificationService.verifyEmail(token)
     }
 }

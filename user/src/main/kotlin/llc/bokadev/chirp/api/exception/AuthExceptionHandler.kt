@@ -1,5 +1,6 @@
 package llc.bokadev.chirp.api.exception
 
+import llc.bokadev.chirp.domain.exception.EmailNotVerifiedException
 import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
 import llc.bokadev.chirp.domain.exception.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.UserAlreadyExistsException
@@ -49,6 +50,17 @@ class AuthExceptionHandler {
         "code" to "INVALID_TOKEN",
         "message" to e.message
     )
+
+    @ExceptionHandler(EmailNotVerifiedException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onEmailNotVerified(
+        e: EmailNotVerifiedException
+    ) = mapOf(
+        "code" to "EMAIL_NOT_VERIFIED",
+        "message" to e.message
+    )
+
+
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun onValidationException(

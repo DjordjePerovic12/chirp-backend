@@ -1,5 +1,6 @@
 package llc.bokadev.chirp.service.auth
 
+import llc.bokadev.chirp.domain.exception.EmailNotVerifiedException
 import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
 import llc.bokadev.chirp.domain.exception.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.UserAlreadyExistsException
@@ -25,9 +26,11 @@ class AuthService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
-    private val refreshTokenRepository: RefreshTokenRepository
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val emailVerificationService: EmailVerificationService
 ) {
 
+    @Transactional
     fun registerUser(email: String, username: String, password: String): User {
         val user = userRepository.findByEmailOrUsername(email.trim(), username.trim())
 
@@ -35,13 +38,16 @@ class AuthService(
             throw UserAlreadyExistsException()
         }
 
+
         val savedUser = userRepository.save(
             UserEntity(
                 email = email.trim(),
                 username = username.trim(),
-                hashedPassword = passwordEncoder.encode(password)!!
+                hashedPassword = passwordEncoder.encode(password)!!,
             )
         ).toUser()
+
+        emailVerificationService.createVerificationToken(email.trim())
 
         return savedUser
     }
@@ -53,6 +59,10 @@ class AuthService(
 
         if (!passwordEncoder.matches(rawPassword = password, user.hashedPassword)) {
             throw InvalidCredentialsException()
+        }
+
+        if(user.hasVerifiedEmail) {
+            throw EmailNotVerifiedException()
         }
 
         return user.id?.let { userId ->

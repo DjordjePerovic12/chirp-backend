@@ -1,0 +1,19 @@
+package llc.bokadev.chirp.infra.security
+
+import java.security.SecureRandom
+import java.util.Base64
+
+//Generates an email verification token
+//that will be held in the verification link
+object TokenGenerator {
+    fun generateSecureToken(): String {
+        val bytes = ByteArray(32) { 0 }
+
+        val secureRandom = SecureRandom()
+        secureRandom.nextBytes(bytes)
+
+        return Base64.getUrlEncoder()
+            .withoutPadding()
+            .encodeToString(bytes)
+    }
+}
