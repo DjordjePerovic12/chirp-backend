@@ -1,11 +1,11 @@
 package llc.bokadev.chirp.api.exception
 
+import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
 import llc.bokadev.chirp.domain.exception.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.UserAlreadyExistsException
-import org.apache.coyote.Response
+import llc.bokadev.chirp.domain.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.ErrorResponse
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -14,19 +14,40 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class AuthExceptionHandler {
 
-
     @ExceptionHandler(UserAlreadyExistsException::class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    fun onUserAlreadyExists(e: UserAlreadyExistsException) = mapOf(
+    fun onUserAlreadyExists(
+        e: UserAlreadyExistsException
+    ) = mapOf(
         "code" to "USER_EXISTS",
-        "message" to e.message,
+        "message" to e.message
+    )
+
+    @ExceptionHandler(UserNotFoundException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun onUserNotFound(
+        e: UserNotFoundException
+    ) = mapOf(
+        "code" to "USER_NOT_FOUND",
+        "message" to e.message
+    )
+
+    @ExceptionHandler(InvalidCredentialsException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onInvalidCredentials(
+        e: InvalidCredentialsException
+    ) = mapOf(
+        "code" to "INVALID_CREDENTIALS",
+        "message" to e.message
     )
 
     @ExceptionHandler(InvalidTokenException::class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    fun onInvalidToken(e: UserAlreadyExistsException) = mapOf(
+    fun onInvalidToken(
+        e: InvalidTokenException
+    ) = mapOf(
         "code" to "INVALID_TOKEN",
-        "message" to e.message,
+        "message" to e.message
     )
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
