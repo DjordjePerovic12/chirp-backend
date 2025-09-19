@@ -11,6 +11,7 @@ import llc.bokadev.chirp.api.dto.ResetPasswordRequest
 import llc.bokadev.chirp.api.dto.UserDto
 import llc.bokadev.chirp.api.mappers.toAuthenticatedUserDto
 import llc.bokadev.chirp.api.mappers.toUserDto
+import llc.bokadev.chirp.infra.rete_limiting.EmailRateLimiter
 import llc.bokadev.chirp.service.auth.AuthService
 import llc.bokadev.chirp.service.auth.EmailVerificationService
 import llc.bokadev.chirp.service.auth.PasswordResetService
@@ -26,8 +27,10 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(
     private val authService: AuthService,
     private val emailVerificationService: EmailVerificationService,
-    private val passwordResetService: PasswordResetService
+    private val passwordResetService: PasswordResetService,
+    private val emailRateLimiter: EmailRateLimiter
 ) {
+
 
     @PostMapping("/register")
     fun register(
@@ -63,6 +66,16 @@ class AuthController(
     ) {
         authService.logout(body.refreshToken)
     }
+
+    @PostMapping("/resend-verification")
+    fun resendVerification(
+        @Valid @RequestBody emailRequest: EmailRequest
+    ) {
+        emailRateLimiter.withRateLimit(emailRequest.email) {
+            emailVerificationService.resendVerificationEmail(emailRequest.email)
+        }
+    }
+
 
     @GetMapping("/verify")
     fun verifyEmail(

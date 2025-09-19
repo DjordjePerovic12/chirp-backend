@@ -3,6 +3,7 @@ package llc.bokadev.chirp.api.exception
 import llc.bokadev.chirp.domain.exception.EmailNotVerifiedException
 import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
 import llc.bokadev.chirp.domain.exception.InvalidTokenException
+import llc.bokadev.chirp.domain.exception.RateLimitException
 import llc.bokadev.chirp.domain.exception.SamePasswordException
 import llc.bokadev.chirp.domain.exception.UserAlreadyExistsException
 import llc.bokadev.chirp.domain.exception.UserNotFoundException
@@ -67,6 +68,15 @@ class AuthExceptionHandler {
         e: SamePasswordException
     ) = mapOf(
         "code" to "SAME_PASSWORD",
+        "message" to e.message
+    )
+
+    @ExceptionHandler(RateLimitException::class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    fun omRateLimitExceeded(
+        e: RateLimitException
+    ) = mapOf(
+        "code" to "RATE_LIMIT_EXCEEDED",
         "message" to e.message
     )
 
