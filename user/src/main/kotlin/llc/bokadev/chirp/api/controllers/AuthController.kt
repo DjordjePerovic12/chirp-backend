@@ -1,6 +1,7 @@
 package llc.bokadev.chirp.api.controllers
 
 import jakarta.validation.Valid
+import llc.bokadev.chirp.api.config.IpRateLimit
 import llc.bokadev.chirp.api.dto.AuthenticatedUserDto
 import llc.bokadev.chirp.api.dto.ChangePasswordRequest
 import llc.bokadev.chirp.api.dto.EmailRequest
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.concurrent.TimeUnit
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,6 +35,11 @@ class AuthController(
 
 
     @PostMapping("/register")
+    @IpRateLimit(
+        requests = 10,
+        duration = 1L,
+        unit = TimeUnit.HOURS
+    )
     fun register(
         @Valid @RequestBody registerRequest: RegisterRequest
     ): UserDto {
@@ -44,6 +51,11 @@ class AuthController(
     }
 
     @PostMapping("/login")
+    @IpRateLimit(
+        requests = 10,
+        duration = 1L,
+        unit = TimeUnit.HOURS
+    )
     fun login(
         @Valid @RequestBody loginRequest: LoginRequest
     ): AuthenticatedUserDto {
@@ -54,6 +66,11 @@ class AuthController(
     }
 
     @PostMapping("/refresh")
+    @IpRateLimit(
+        requests = 10,
+        duration = 1L,
+        unit = TimeUnit.HOURS
+    )
     fun refresh(
         @RequestBody refreshRequest: RefreshRequest
     ): AuthenticatedUserDto {
@@ -68,6 +85,11 @@ class AuthController(
     }
 
     @PostMapping("/resend-verification")
+    @IpRateLimit(
+        requests = 10,
+        duration = 1L,
+        unit = TimeUnit.HOURS
+    )
     fun resendVerification(
         @Valid @RequestBody emailRequest: EmailRequest
     ) {
@@ -85,6 +107,11 @@ class AuthController(
     }
 
     @PostMapping("/forgot-password")
+    @IpRateLimit(
+        requests = 10,
+        duration = 1L,
+        unit = TimeUnit.HOURS
+    )
     fun forgotPassword(
         @RequestBody emailRequest: EmailRequest
     ) {
