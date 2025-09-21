@@ -82,15 +82,15 @@ class PasswordResetService(
 
     }
 
-
+    @Transactional
     fun changePassword(userId: UserId, oldPassword: String, newPassword: String) {
         val user = userRepository.findByIdOrNull(userId) ?: throw UserNotFoundException()
 
-        if(!passwordEncoder.matches(oldPassword, user.hashedPassword)) {
+        if (!passwordEncoder.matches(oldPassword, user.hashedPassword)) {
             throw InvalidCredentialsException()
         }
 
-        if(oldPassword == newPassword) {
+        if (oldPassword == newPassword) {
             throw SamePasswordException()
         }
 

@@ -12,6 +12,7 @@ import llc.bokadev.chirp.api.dto.ResetPasswordRequest
 import llc.bokadev.chirp.api.dto.UserDto
 import llc.bokadev.chirp.api.mappers.toAuthenticatedUserDto
 import llc.bokadev.chirp.api.mappers.toUserDto
+import llc.bokadev.chirp.api.util.requestUserId
 import llc.bokadev.chirp.infra.rete_limiting.EmailRateLimiter
 import llc.bokadev.chirp.service.auth.AuthService
 import llc.bokadev.chirp.service.auth.EmailVerificationService
@@ -130,16 +131,12 @@ class AuthController(
 
     @PostMapping("/change-password")
     fun changePassword(
-        @RequestBody changePasswordRequest: ChangePasswordRequest
+      @Valid @RequestBody changePasswordRequest: ChangePasswordRequest
     ) {
-
-        // TODO: Extract request user ID from jwt
-//        passwordResetService.changePassword(
-//            oldPassword = changePasswordRequest.oldPassword,
-//            newPassword = changePasswordRequest.newPassword,
-//            userId =
-//        )
-
-
+        passwordResetService.changePassword(
+            userId = requestUserId,
+            oldPassword = changePasswordRequest.oldPassword,
+            newPassword = changePasswordRequest.newPassword,
+        )
     }
 }

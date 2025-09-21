@@ -61,7 +61,7 @@ class AuthService(
             throw InvalidCredentialsException()
         }
 
-        if(user.hasVerifiedEmail) {
+        if(!user.hasVerifiedEmail) {
             throw EmailNotVerifiedException()
         }
 
