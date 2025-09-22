@@ -5,7 +5,7 @@ import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
 import llc.bokadev.chirp.domain.exception.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.SamePasswordException
 import llc.bokadev.chirp.domain.exception.UserNotFoundException
-import llc.bokadev.chirp.domain.model.UserId
+import llc.bokadev.chirp.domain.type.UserId
 import llc.bokadev.chirp.infra.database.entities.PasswordResetTokenEntity
 import llc.bokadev.chirp.infra.database.repositories.PasswordResetTokenRepository
 import llc.bokadev.chirp.infra.database.repositories.RefreshTokenRepository

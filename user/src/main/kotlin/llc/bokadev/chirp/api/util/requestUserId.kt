@@ -1,7 +1,7 @@
 package llc.bokadev.chirp.api.util
 
 import llc.bokadev.chirp.domain.exception.UnauthorizedException
-import llc.bokadev.chirp.domain.model.UserId
+import llc.bokadev.chirp.domain.type.UserId
 import org.springframework.security.core.context.SecurityContextHolder
 
 

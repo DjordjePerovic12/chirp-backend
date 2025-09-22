@@ -1,6 +1,6 @@
 package llc.bokadev.chirp.api.dto
 
-import llc.bokadev.chirp.domain.model.UserId
+import llc.bokadev.chirp.domain.type.UserId
 
 data class UserDto(
     val id: UserId,

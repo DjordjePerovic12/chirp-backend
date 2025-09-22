@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Index
 import jakarta.persistence.Table
-import llc.bokadev.chirp.domain.model.UserId
+import llc.bokadev.chirp.domain.type.UserId
 import org.hibernate.annotations.CreationTimestamp
 import java.time.Instant
 
