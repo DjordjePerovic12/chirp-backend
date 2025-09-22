@@ -1,4 +1,4 @@
-package llc.bokadev.llc.bokadev.chirp.domain.events
+package llc.bokadev.chirp.domain.events
 
 import java.time.Instant
 

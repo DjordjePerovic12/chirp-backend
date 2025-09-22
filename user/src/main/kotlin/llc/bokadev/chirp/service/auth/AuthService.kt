@@ -1,5 +1,6 @@
 package llc.bokadev.chirp.service.auth
 
+import llc.bokadev.chirp.domain.events.user.UserEvent
 import llc.bokadev.chirp.domain.exception.EmailNotVerifiedException
 import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
 import llc.bokadev.chirp.domain.exception.InvalidTokenException
@@ -13,6 +14,7 @@ import llc.bokadev.chirp.infra.database.entities.UserEntity
 import llc.bokadev.chirp.infra.database.mappers.toUser
 import llc.bokadev.chirp.infra.database.repositories.RefreshTokenRepository
 import llc.bokadev.chirp.infra.database.repositories.UserRepository
+import llc.bokadev.chirp.infra.message_queue.EventPublisher
 import llc.bokadev.chirp.infra.security.PasswordEncoder
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -27,7 +29,8 @@ class AuthService(
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val emailVerificationService: EmailVerificationService
+    private val emailVerificationService: EmailVerificationService,
+    private val eventPublisher: EventPublisher
 ) {
 
     @Transactional
@@ -47,7 +50,16 @@ class AuthService(
             )
         ).toUser()
 
-        emailVerificationService.createVerificationToken(email.trim())
+        val token = emailVerificationService.createVerificationToken(email.trim())
+
+        eventPublisher.publish(
+            event = UserEvent.Created(
+                userId = savedUser.id,
+                email = savedUser.email,
+                username = savedUser.username,
+                verificationToken = token.token
+            )
+        )
 
         return savedUser
     }

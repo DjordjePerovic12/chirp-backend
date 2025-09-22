@@ -1,7 +1,7 @@
 package llc.bokadev.chirp.domain.events.user
 
+import llc.bokadev.chirp.domain.events.ChirpEvent
 import llc.bokadev.chirp.domain.type.UserId
-import llc.bokadev.llc.bokadev.chirp.domain.events.ChirpEvent
 import llc.bokadev.llc.bokadev.chirp.domain.events.user.UserEventConstants
 import java.time.Instant
 import java.util.UUID
