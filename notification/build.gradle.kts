@@ -16,6 +16,7 @@ dependencies {
     testImplementation(kotlin("test"))
 
     implementation(libs.spring.boot.starter.amqp)
+    implementation(libs.spring.boot.starter.thymeleaf)
 }
 
 tasks.test {
