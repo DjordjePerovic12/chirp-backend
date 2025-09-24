@@ -5,7 +5,7 @@ import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
 import llc.bokadev.chirp.domain.exception.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.RateLimitException
 import llc.bokadev.chirp.domain.exception.SamePasswordException
-import llc.bokadev.chirp.domain.exception.UnauthorizedException
+import llc.bokadev.llc.bokadev.chirp.domain.exceptions.UnauthorizedException
 import llc.bokadev.chirp.domain.exception.UserAlreadyExistsException
 import llc.bokadev.chirp.domain.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
