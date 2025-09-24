@@ -1,6 +1,7 @@
 package llc.bokadev.chirp.service.auth
 
 import jakarta.transaction.Transactional
+import llc.bokadev.chirp.domain.events.user.UserEvent
 import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
 import llc.bokadev.chirp.domain.exception.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.SamePasswordException
@@ -10,6 +11,7 @@ import llc.bokadev.chirp.infra.database.entities.PasswordResetTokenEntity
 import llc.bokadev.chirp.infra.database.repositories.PasswordResetTokenRepository
 import llc.bokadev.chirp.infra.database.repositories.RefreshTokenRepository
 import llc.bokadev.chirp.infra.database.repositories.UserRepository
+import llc.bokadev.chirp.infra.message_queue.EventPublisher
 import llc.bokadev.chirp.infra.security.PasswordEncoder
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.repository.findByIdOrNull
@@ -24,7 +26,8 @@ class PasswordResetService(
     private val passwordResetTokenRepository: PasswordResetTokenRepository,
     @param:Value("\${chirp.email.reset-password.expiry-minutes}") private val expiryMinutes: Long,
     private val passwordEncoder: PasswordEncoder,
-    private val refreshTokenRepository: RefreshTokenRepository
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val eventPublisher: EventPublisher
 ) {
 
     @Transactional
@@ -44,7 +47,15 @@ class PasswordResetService(
 
         passwordResetTokenRepository.save(token)
 
-        // TODO: Inform notification service about password reset trigger to send email
+        eventPublisher.publish(
+            event = UserEvent.RequestResetPassword(
+                userId = user.id!!,
+                email = user.email,
+                username = user.username,
+                verificationToken = token.token,
+                expiresInMinutes = expiryMinutes
+            )
+        )
     }
 
     @Transactional

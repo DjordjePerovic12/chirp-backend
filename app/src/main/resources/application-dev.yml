@@ -2,6 +2,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  mail:
+    host: smtp.mailgun.org
+    username: bokadev@sandbox0f3ef819477849e7bd94a1f98f768c67.mailgun.org
 
 jwt:
   expiration-minutes: 1000
@@ -10,6 +13,8 @@ nginx:
   require-proxy: false
 
 chirp:
+  email:
+    url: "http://localhost:8080"
   rate-limit:
     ip:
       apply-limit: false

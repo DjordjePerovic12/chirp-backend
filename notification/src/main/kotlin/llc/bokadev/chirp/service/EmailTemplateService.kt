@@ -1,4 +1,4 @@
-package llc.bokadev.llc.bokadev.chirp.service
+package llc.bokadev.chirp.service
 
 import org.springframework.stereotype.Service
 import org.thymeleaf.TemplateEngine
