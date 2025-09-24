@@ -1,4 +1,4 @@
-package llc.bokadev.llc.bokadev.chirp.domain.events.user
+package llc.bokadev.chirp.domain.events.user
 
 object UserEventConstants {
 

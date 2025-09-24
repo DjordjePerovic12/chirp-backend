@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import llc.bokadev.chirp.domain.events.ChirpEvent
-import llc.bokadev.llc.bokadev.chirp.domain.events.user.UserEventConstants
+import llc.bokadev.chirp.domain.events.user.UserEventConstants
 import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.BindingBuilder
 import org.springframework.amqp.core.Queue
