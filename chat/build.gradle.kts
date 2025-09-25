@@ -19,6 +19,7 @@ dependencies {
     runtimeOnly(libs.postgresql)
 
     implementation(libs.spring.boot.starter.validation)
+    implementation(libs.spring.boot.starter.amqp)
 }
 
 tasks.test {

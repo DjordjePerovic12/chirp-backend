@@ -29,7 +29,7 @@ class EmailVerificationService(
     fun resendVerificationEmail(email: String) {
         val token = createVerificationToken(email)
 
-        if(token.user.hasVerifiedEmail) {
+        if (token.user.hasVerifiedEmail) {
             return
         }
 
@@ -80,6 +80,14 @@ class EmailVerificationService(
                 this.hasVerifiedEmail = true
             }
         ).toUser()
+
+        eventPublisher.publish(
+            event = UserEvent.Verified(
+                userId = verificationToken.user.id!!,
+                email = verificationToken.user.email,
+                username = verificationToken.user.username
+            )
+        )
     }
 
     @Scheduled(cron = "0 0 3 * * *")
