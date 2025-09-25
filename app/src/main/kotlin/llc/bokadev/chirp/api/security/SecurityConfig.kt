@@ -1,4 +1,4 @@
-package llc.bokadev.chirp.security
+package llc.bokadev.chirp.api.security
 
 import jakarta.servlet.DispatcherType
 import llc.bokadev.chirp.api.config.JwtAuthFilter
