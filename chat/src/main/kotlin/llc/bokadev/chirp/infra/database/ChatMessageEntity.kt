@@ -13,6 +13,8 @@ import jakarta.persistence.Table
 import llc.bokadev.chirp.domain.type.ChatId
 import llc.bokadev.chirp.domain.type.ChatMessageId
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import java.time.Instant
 
 @Entity
@@ -48,6 +50,7 @@ class ChatMessageEntity(
         insertable = false,
         updatable = false
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     var chat: ChatEntity? = null,
     // Default value has to be set to null
     // so that initially hibernate can populate it
@@ -60,7 +63,7 @@ class ChatMessageEntity(
         insertable = false,
         updatable = false
     )
-    var sender: ChatParticipantEntity? = null,
+    var sender: ChatParticipantEntity,
     @CreationTimestamp
     var createdAt: Instant = Instant.now(),
 

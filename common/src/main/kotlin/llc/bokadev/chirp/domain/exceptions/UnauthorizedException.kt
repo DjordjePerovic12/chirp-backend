@@ -1,4 +1,4 @@
-package llc.bokadev.llc.bokadev.chirp.domain.exceptions
+package llc.bokadev.chirp.domain.exceptions
 
 import java.lang.RuntimeException
 

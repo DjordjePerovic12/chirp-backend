@@ -4,6 +4,7 @@ import llc.bokadev.chirp.domain.models.Chat
 import llc.bokadev.chirp.domain.models.ChatMessage
 import llc.bokadev.chirp.domain.models.ChatParticipant
 import llc.bokadev.chirp.infra.database.ChatEntity
+import llc.bokadev.chirp.infra.database.ChatMessageEntity
 import llc.bokadev.chirp.infra.database.ChatParticipantEntity
 
 fun ChatEntity.toChat(lastMessage: ChatMessage? = null): Chat {
@@ -26,5 +27,16 @@ fun ChatParticipantEntity.toChatParticipant(): ChatParticipant {
         username = username,
         email = email,
         profilePictureUrl = profilePictureUrl
+    )
+}
+
+fun ChatMessageEntity.toChatMessage(): ChatMessage {
+    return ChatMessage(
+        id = id!!,
+        chatId = chatId,
+        sender = sender.toChatParticipant(),
+        content = content,
+        createdAt = createdAt,
+
     )
 }

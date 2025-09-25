@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.time.Instant
 
-interface ChatMessages : JpaRepository<ChatMessageEntity, ChatMessageId> {
+interface ChatMessageRepository : JpaRepository<ChatMessageEntity, ChatMessageId> {
 
     @Query("""
         SELECT m

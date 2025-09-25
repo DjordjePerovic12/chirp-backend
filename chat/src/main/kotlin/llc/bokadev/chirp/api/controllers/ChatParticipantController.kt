@@ -3,7 +3,7 @@ package llc.bokadev.chirp.api.controllers
 import llc.bokadev.chirp.api.dto.ChatParticipantDto
 import llc.bokadev.chirp.api.mappers.toChatParticipantDto
 import llc.bokadev.chirp.service.ChatParticipantService
-import llc.bokadev.llc.bokadev.chirp.api.util.requestUserId
+import llc.bokadev.chirp.api.util.requestUserId
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
