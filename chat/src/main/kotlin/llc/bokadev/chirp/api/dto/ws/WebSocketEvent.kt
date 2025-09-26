@@ -1,5 +1,7 @@
 package llc.bokadev.chirp.api.dto.ws
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 enum class IncomingWebSocketMessageType {
     NEW_MESSAGE
 
@@ -14,11 +16,15 @@ enum class OutgoingWebSocketMessageType {
 }
 
 data class IncomingWebSocketMessage(
+    @JsonProperty("type")
     val type: IncomingWebSocketMessageType,
+    @JsonProperty("payload")
     val payload: String
 )
 
 data class OutgoingWebSocketMessage(
+    @JsonProperty("type")
     val type: OutgoingWebSocketMessageType,
+    @JsonProperty("payload")
     val payload: String
 )

@@ -113,9 +113,9 @@ class PasswordResetService(
             this.hashedPassword = hashedNewPassword!!
         })
 
-        @Scheduled(cron = "0 0 3 * * *")
-        fun cleanupExpiredTokens() {
-            passwordResetTokenRepository.deleteByExpiresAtLessThan(Instant.now())
-        }
+    }
+    @Scheduled(cron = "0 0 3 * * *")
+    fun cleanupExpiredTokens() {
+        passwordResetTokenRepository.deleteByExpiresAtLessThan(Instant.now())
     }
 }

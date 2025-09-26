@@ -19,3 +19,5 @@ chirp:
   rate-limit:
     ip:
       apply-limit: true
+  websocket:
+    allowed-origin: "https://chirp.bokadev.me"
