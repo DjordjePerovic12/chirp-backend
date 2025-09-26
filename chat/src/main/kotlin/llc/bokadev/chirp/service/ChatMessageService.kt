@@ -18,7 +18,7 @@ import llc.bokadev.chirp.infra.database.repositories.ChatMessageRepository
 import llc.bokadev.chirp.infra.database.repositories.ChatParticipantRepository
 import llc.bokadev.chirp.infra.database.repositories.ChatRepository
 import llc.bokadev.chirp.infra.message_queue.EventPublisher
-import llc.bokadev.llc.bokadev.chirp.domain.events.chat.ChatEvent
+import llc.bokadev.chirp.domain.events.chat.ChatEvent
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.PageRequest

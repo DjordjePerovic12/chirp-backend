@@ -1,7 +1,7 @@
 package llc.bokadev.chirp.service.auth
 
 import llc.bokadev.chirp.domain.events.user.UserEvent
-import llc.bokadev.chirp.domain.exception.InvalidTokenException
+import llc.bokadev.chirp.domain.exceptions.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.UserNotFoundException
 import llc.bokadev.chirp.domain.model.EmailVerificationToken
 import llc.bokadev.chirp.infra.database.entities.EmailVerificationTokenEntity

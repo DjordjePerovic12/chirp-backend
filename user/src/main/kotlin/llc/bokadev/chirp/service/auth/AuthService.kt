@@ -3,7 +3,7 @@ package llc.bokadev.chirp.service.auth
 import llc.bokadev.chirp.domain.events.user.UserEvent
 import llc.bokadev.chirp.domain.exception.EmailNotVerifiedException
 import llc.bokadev.chirp.domain.exception.InvalidCredentialsException
-import llc.bokadev.chirp.domain.exception.InvalidTokenException
+import llc.bokadev.chirp.domain.exceptions.InvalidTokenException
 import llc.bokadev.chirp.domain.exception.UserAlreadyExistsException
 import llc.bokadev.chirp.domain.exception.UserNotFoundException
 import llc.bokadev.chirp.domain.model.AuthenticatedUser
@@ -16,6 +16,7 @@ import llc.bokadev.chirp.infra.database.repositories.RefreshTokenRepository
 import llc.bokadev.chirp.infra.database.repositories.UserRepository
 import llc.bokadev.chirp.infra.message_queue.EventPublisher
 import llc.bokadev.chirp.infra.security.PasswordEncoder
+import llc.bokadev.chirp.service.JwtService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

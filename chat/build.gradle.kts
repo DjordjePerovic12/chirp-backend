@@ -20,6 +20,7 @@ dependencies {
 
     implementation(libs.spring.boot.starter.validation)
     implementation(libs.spring.boot.starter.amqp)
+    implementation(libs.spring.boot.starter.websocket)
 }
 
 tasks.test {

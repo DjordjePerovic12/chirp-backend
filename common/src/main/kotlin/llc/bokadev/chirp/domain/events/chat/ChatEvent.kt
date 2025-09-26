@@ -1,4 +1,4 @@
-package llc.bokadev.llc.bokadev.chirp.domain.events.chat
+package llc.bokadev.chirp.domain.events.chat
 
 import llc.bokadev.chirp.domain.events.ChirpEvent
 import llc.bokadev.chirp.domain.events.chat.ChatEventConstants

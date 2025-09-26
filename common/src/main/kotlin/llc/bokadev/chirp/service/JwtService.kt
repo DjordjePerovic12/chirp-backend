@@ -1,9 +1,9 @@
-package llc.bokadev.chirp.service.auth
+package llc.bokadev.chirp.service
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
-import llc.bokadev.chirp.domain.exception.InvalidTokenException
+import llc.bokadev.chirp.domain.exceptions.InvalidTokenException
 import llc.bokadev.chirp.domain.type.UserId
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
