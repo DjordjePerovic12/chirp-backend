@@ -11,6 +11,7 @@ import llc.bokadev.chirp.api.dto.ws.OutgoingWebSocketMessage
 import llc.bokadev.chirp.api.dto.ws.OutgoingWebSocketMessageType
 import llc.bokadev.chirp.api.dto.ws.ProfilePictureUpdateDto
 import llc.bokadev.chirp.api.dto.ws.SendMessageDto
+import llc.bokadev.chirp.domain.event.ChatCreatedEvent
 import llc.bokadev.chirp.domain.event.ChatParticipantLeftEvent
 import llc.bokadev.chirp.domain.event.ChatParticipantsJoinedEvent
 import llc.bokadev.chirp.domain.event.MessageDeletedEvent
@@ -193,6 +194,27 @@ class ChatWebSocketHandler(
                 )
             )
         )
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    fun onChatCreated(event: ChatCreatedEvent) {
+        connectionLock.write {
+            event.participantIds.forEach { userId ->
+                userChatIds.compute(userId) { _, chatIds ->
+                    (chatIds ?: mutableSetOf()).apply {
+                        add(event.chatId)
+                    }
+                }
+
+                userToSessions[userId]?.forEach { sessionId ->
+                    chatToSessions.compute(event.chatId) { _, sessions ->
+                        (sessions ?: mutableSetOf()).apply {
+                            add(sessionId)
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

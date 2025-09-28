@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional
 import llc.bokadev.chirp.api.dto.ChatDto
 import llc.bokadev.chirp.api.dto.ChatMessageDto
 import llc.bokadev.chirp.api.mappers.toChatMessageDto
+import llc.bokadev.chirp.domain.event.ChatCreatedEvent
 import llc.bokadev.chirp.domain.event.ChatParticipantLeftEvent
 import llc.bokadev.chirp.domain.event.ChatParticipantsJoinedEvent
 import llc.bokadev.chirp.domain.exception.ChatNotFoundException
@@ -97,12 +98,18 @@ class ChatService(
         val creator = chatParticipantRepository.findByIdOrNull(creatorId)
             ?: throw ChatParticipantNotFoundException(creatorId)
 
-        return chatRepository.save(
+        return chatRepository.saveAndFlush(
             ChatEntity(
                 creator = creator,
                 participants = setOf(creator) + otherParticipants
             )
-        ).toChat(lastMessage = null)
+        ).toChat(lastMessage = null).also { entity ->
+            applicationEventPublisher.publishEvent(
+                ChatCreatedEvent(
+                chatId = entity.id,
+                participantIds = entity.participants.map { it.userId }
+            ))
+        }
     }
 
     @Transactional
